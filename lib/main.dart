@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:iot_app/pages/loginPage.dart';
+// import 'package:iot_app/pages/authPage.dart';
+import 'package:iot_app/pages/homePage.dart';
+// import 'package:iot_app/pages/loginPage.dart';
+import 'package:iot_app/pages/loginorregister.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +18,10 @@ class MyApp extends StatelessWidget {
       title: 'IOT App',
       debugShowCheckedModeBanner: false,
 
-      home: LoginPage(),
+      home: const LoginOrRegister(),
+      routes: {
+        '/homepage' : (context) => HomePage(),
+      },
     );
   }
 }
