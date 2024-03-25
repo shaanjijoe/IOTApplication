@@ -8,22 +8,20 @@ import 'package:iot_app/components/square_tile.dart';
 
 import '../logicscripts/FetchData.dart';
 
-class LoginPage extends StatefulWidget {
-   final Function()? loginregistertoggler;
-   const LoginPage({
-      super.key,
-     required this.loginregistertoggler,
+class RegisterPage extends StatefulWidget {
+  final Function()? loginregistertoggler;
+  const RegisterPage({
+    super.key,
+    required this.loginregistertoggler,
   });
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   // controllers
   final emailController = TextEditingController();
-
-  final passwordController = TextEditingController();
 
 
 
@@ -44,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
       showDialog(
         context: context,
         builder: (context) {
-        return AlertDialog(
+          return AlertDialog(
             backgroundColor: Colors.grey.shade600,
             title: Center(
               child: Text(
@@ -52,12 +50,12 @@ class _LoginPageState extends State<LoginPage> {
                 style: const TextStyle(color: Colors.white),
               ), // Text ), // Center
             ),
-        );
+          );
         },
       );// AlertDialog
     }
 
-    void signIn() async{
+    void signUp() async{
       final result = await FetchData.connectionStatus();
 
       // Check the result and call the popUp function accordingly
@@ -67,47 +65,31 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
 
-      String email = emailController.text;
-      String password = passwordController.text;
+      final result2 = await FetchData.register(emailController.text);
 
-      final result2 = await FetchData.login(email, password);
-
-      if (result2["error"] == "incomplete request") {
-        popUpCenter("Parameter Absent");
+      if (result2["error"] == "duplicate") {
+        popUpCenter("Email already exists");
         return;
       }
 
 
-      // popUp(jsonEncode(result2));
-      // return;
-
-      if (result2["status"] == false) {
-        // popUp(jsonEncode(result2));
-        // return;
-        if(result2["error"]=="404"){
-          popUpCenter("Email not registered");
-        } else if (result2["error"]=="401"){
-          popUpCenter("Incorrect Password");
-        } else {
-          popUpCenter(result2["error"]);
-        }
+      if (result2["error"] == "failed") {
+        popUpCenter("Account creation failed");
         return;
       }
 
+      String token = result2["secret_key"];
 
-      // popUpCenter(password);
+      popUpCenter(token);
 
-      bool save = await FetchData.writeToken(password);
+      bool save = await FetchData.writeToken(token);
 
       if(save){
         // popUp('Saved successfully');
-        popUpCenter(password);
-        Navigator.pushReplacementNamed(context, '/homepage');
+        popUpCenter(token);
       } else {
         popUp('Failed Saving');
       }
-
-      // Navigator.pushReplacementNamed(context, '/homepage');
     }
 
 
@@ -135,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: isTablet ? 50: 25,),
 
                 Text(
-                  'Hi there! Welcome back',
+                  'Let\'s register',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 50,
@@ -155,27 +137,20 @@ class _LoginPageState extends State<LoginPage> {
 
                 SizedBox(height: isTablet ? 50: 25,),
 
-                //password
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
 
-                SizedBox(height: isTablet ? 50: 25,),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Colors.grey.shade600,
-                        fontSize: fontSize),
-                      ),
-                    ],
-                  ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 50.0),
+                  // child: Row(
+                  //   mainAxisAlignment: MainAxisAlignment.end,
+                  //   children: [
+                  //     Text(
+                  //       'Forgot Password?',
+                  //       style: TextStyle(color: Colors.grey.shade600,
+                  //           fontSize: fontSize),
+                  //     ),
+                  //   ],
+                  // ),
                 ),
 
 
@@ -184,8 +159,24 @@ class _LoginPageState extends State<LoginPage> {
 
 
                 MyButton(
-                  message: 'Sign In',
-                  onTap: signIn,),
+                  message: 'Sign Up',
+                  onTap: signUp,),
+
+                //       () async {
+                //     // Call the connectionStatus function
+                //     final result = await FetchData.connectionStatus();
+                //
+                //     // Check the result and call the popUp function accordingly
+                //     // popUp(jsonEncode(result));
+                //     if (result['status'] == 'error') {
+                //       popUp("Error Making Request");
+                //     } else if (result['status']){
+                //       popUp("Server Connected");
+                //     } else {
+                //       popUp("Server Disconnected");
+                //     }
+                //   },
+                // ),
 
 
                 SizedBox(height: isTablet ? 50: 25,),
@@ -199,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Divider(
                             thickness: 1,
                             color: Colors.grey.shade400,
-                        )
+                          )
                       ),
 
                       Padding(
@@ -207,8 +198,8 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           'Or continue With',
                           style: TextStyle(
-                              color: Colors.grey.shade700,
-                              fontSize: isTablet ? 30 : 16,
+                            color: Colors.grey.shade700,
+                            fontSize: isTablet ? 30 : 16,
                           ),
                         ),
                       ),
@@ -225,10 +216,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
 
-                SizedBox(height: isTablet ? 30: 25,),
+                SizedBox(height: isTablet ? 50: 25,),
 
                 // google and other sign in options
-                 Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SquareTile(imagePath: 'lib/images/IOTWiFiIcon.jpeg',),
@@ -240,19 +231,19 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
 
-                SizedBox(height: isTablet ? 30: 25,),
+                SizedBox(height: isTablet ? 50: 25,),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: [
-                    Text('Not a member?', style: TextStyle(fontSize: fontSize),),
+                  children: [
+                    Text('Already a member?', style: TextStyle(fontSize: fontSize),),
                     const SizedBox(width: 4,),
                     GestureDetector(
                       onTap: widget.loginregistertoggler,
-                      child: Text('Register Now',
-                      style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.bold, fontSize: fontSize,
-                      ),),
+                      child: Text('Login',
+                        style: TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.bold, fontSize: fontSize,
+                        ),),
                     )
                   ],
                 )
