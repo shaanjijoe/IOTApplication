@@ -4,10 +4,12 @@ class RoundedTab extends StatelessWidget {
   final String text;
   final double width;
   final double height;
+  final double fontSize;
   const RoundedTab({super.key,
   required this.text,
   required this.width,
-  required this.height});
+  required this.height,
+  required this.fontSize,});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class RoundedTab extends StatelessWidget {
       child: Center(
         child: Text(
           text,
-          style: TextStyle(color: Colors.black, fontSize: 20), // Black text color
+          style: TextStyle(color: Colors.black, fontSize: fontSize), // Black text color
         ),
       ),
     );
