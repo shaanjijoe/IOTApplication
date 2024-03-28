@@ -58,6 +58,8 @@ class _RegisterPageState extends State<RegisterPage> {
     void signUp() async{
       final result = await FetchData.connectionStatus();
 
+      String email = emailController.text;
+
       // Check the result and call the popUp function accordingly
       // popUp(jsonEncode(result));
       if (result["error"] == "incomplete request") {
@@ -65,7 +67,7 @@ class _RegisterPageState extends State<RegisterPage> {
         return;
       }
 
-      final result2 = await FetchData.register(emailController.text);
+      final result2 = await FetchData.register(email);
 
       if (result2["error"] == "duplicate") {
         popUpCenter("Email already exists");
@@ -83,8 +85,9 @@ class _RegisterPageState extends State<RegisterPage> {
       popUpCenter(token);
 
       bool save = await FetchData.writeToken(token);
+      bool save2 = await FetchData.writeData("email", email);
 
-      if(save){
+      if(save && save2){
         // popUp('Saved successfully');
         popUpCenter(token);
       } else {
@@ -102,12 +105,12 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
-                SizedBox(height: isTablet ? 50: 25,), //spacing on top
+                SizedBox(height: isTablet ? 50: 20,), //spacing on top
 
                 //logo
-                const Icon(
+                Icon(
                   Icons.lock,
-                  size: 100,
+                  size: isTablet ? 100: 50,
                 ),
 
                 // IconButton(onPressed: () {}, icon: Image.asset('lib/images/IOTWiFiIcon.jpeg'),
@@ -120,13 +123,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   'Let\'s register',
                   style: TextStyle(
                     color: Colors.grey[700],
-                    fontSize: 50,
+                    fontSize: isTablet ? 50: 25,
                   ),
                   textAlign: TextAlign.center,
                 ),
 
 
-                SizedBox(height: isTablet ? 50: 25,),
+                SizedBox(height: isTablet ? 50: 30,),
 
                 //username
                 MyTextField(
@@ -161,22 +164,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 MyButton(
                   message: 'Sign Up',
                   onTap: signUp,),
-
-                //       () async {
-                //     // Call the connectionStatus function
-                //     final result = await FetchData.connectionStatus();
-                //
-                //     // Check the result and call the popUp function accordingly
-                //     // popUp(jsonEncode(result));
-                //     if (result['status'] == 'error') {
-                //       popUp("Error Making Request");
-                //     } else if (result['status']){
-                //       popUp("Server Connected");
-                //     } else {
-                //       popUp("Server Disconnected");
-                //     }
-                //   },
-                // ),
 
 
                 SizedBox(height: isTablet ? 50: 25,),
@@ -247,18 +234,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     )
                   ],
                 )
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

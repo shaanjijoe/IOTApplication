@@ -98,8 +98,9 @@ class _LoginPageState extends State<LoginPage> {
       // popUpCenter(password);
 
       bool save = await FetchData.writeToken(password);
+      bool save2 = await FetchData.writeData("email", email);
 
-      if(save){
+      if(save && save2){
         // popUp('Saved successfully');
         popUpCenter(password);
         Navigator.pushReplacementNamed(context, '/homepage');
@@ -123,9 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: isTablet ? 50: 25,), //spacing on top
 
                 //logo
-                const Icon(
+                 Icon(
                   Icons.lock,
-                  size: 100,
+                  size: isTablet ? 100: 50,
                 ),
 
                 // IconButton(onPressed: () {}, icon: Image.asset('lib/images/IOTWiFiIcon.jpeg'),
@@ -138,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                   'Hi there! Welcome back',
                   style: TextStyle(
                     color: Colors.grey[700],
-                    fontSize: 50,
+                    fontSize: isTablet ? 50: 25,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -225,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
 
-                SizedBox(height: isTablet ? 30: 25,),
+                SizedBox(height: isTablet ? 30: 20,),
 
                 // google and other sign in options
                  Row(
@@ -256,21 +257,6 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
               ],
