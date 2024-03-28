@@ -63,7 +63,7 @@ class FetchData {
   }
 
 
-  static Future<bool> writeData(String key, String value) async {
+  static Future<bool> writeData(String key, String? value) async {
     // Check if token exists
     try {
       const storage = FlutterSecureStorage();
