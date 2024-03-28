@@ -62,6 +62,25 @@ class FetchData {
     }
   }
 
+
+  static Future<bool> writeData(String key, String value) async {
+    // Check if token exists
+    try {
+      const storage = FlutterSecureStorage();
+      await storage.write(key: key, value: value);
+      return true;
+    } catch (e){
+      return false;
+    }
+  }
+
+  static Future<String?> readData(String key) async {
+    // Check if token exists
+    const  storage =  FlutterSecureStorage();
+    String? token = await storage.read(key: key);
+    return token;
+  }
+
   // Method to fetch post data
   // static Future<Map<String, dynamic>> fetchPostData() async {
   //   final String apiUrl = '$baseUrl/post'; // Modify the endpoint for post data
