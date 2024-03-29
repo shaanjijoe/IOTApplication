@@ -1,9 +1,18 @@
+import 'package:hive/hive.dart';
+import 'package:iot_app/logicscripts/Database/DataModel.dart';
 import 'package:iot_app/logicscripts/GetRequest.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:iot_app/logicscripts/PostRequest.dart';
 
 class FetchData {
+
   static const String baseUrl = 'https://fast-api-sample-9b2d.onrender.com';
+  // Box<DataModel> box= Hive.box<DataModel>('DesignLab');
+  //
+  // FetchData() {
+  //   box = Hive.box<DataModel>('DesignLab');
+  // }
+
 
 
   // Method to fetch user data
@@ -81,7 +90,33 @@ class FetchData {
     return token;
   }
 
-  // Method to fetch post data
+  // await FetchData.insertInfo(10.0, 20.0, 30.0, 40.0, false, 100, DateTime.timestamp());
+  static Future<bool> insertInfo(double altitude, double concentration, double humidity, double pressure, bool rain, double temperature, DateTime timestamp) async {
+    try {
+      final box = await Hive.openBox<DataModel>('DesignLab');
+      await box.add(DataModel(altitude, concentration, humidity, pressure, rain, temperature, timestamp));
+      return true;
+    } catch (e) {
+      print('Error inserting data: $e');
+      return false;
+    }
+  }
+
+  // var dat = await FetchData.readInfo();
+  static Future<List<DataModel>> readInfo() async {
+    try {
+      final box = await Hive.openBox<DataModel>('DesignLab');
+      final dataList = box.values.toList();
+      dataList.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      return dataList;
+    } catch (e) {
+      print('Error reading data: $e');
+      return [];
+    }
+  }
+
+
+// Method to fetch post data
   // static Future<Map<String, dynamic>> fetchPostData() async {
   //   final String apiUrl = '$baseUrl/post'; // Modify the endpoint for post data
   //

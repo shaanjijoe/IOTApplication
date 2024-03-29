@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:iot_app/logicscripts/Database/DataModel.dart';
 // import 'package:iot_app/pages/authPage.dart';
 import 'package:iot_app/pages/homePage.dart';
 // import 'package:iot_app/pages/loginPage.dart';
 import 'package:iot_app/pages/loginorregister.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(DataModelAdapter());
+
+  // await Hive.openBox('DesignLab');
+
   runApp(const MyApp());
 }
 
