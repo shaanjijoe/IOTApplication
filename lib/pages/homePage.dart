@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:iot_app/components/my_button.dart';
 import 'package:iot_app/components/rounded_tab.dart';
@@ -195,7 +197,9 @@ class _HomePageState extends State<HomePage> {
 
                   SizedBox(height: isTablet ? 60 : 30,),
 
-                  MyButton(onTap: logout, message: 'Log Out'),
+                  MyButton(
+                      onTap: logout,
+                      message: 'Log Out'),
 
                   SizedBox(height: 20),
 
