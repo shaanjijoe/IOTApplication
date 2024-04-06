@@ -41,6 +41,15 @@ class FetchData {
     return await postRequest(requestBody ,apiUrl);
   }
 
+  //Method to fetch data from api
+  static Future<Map<String, dynamic>> fetchInfo(String email, String password) async {
+    const String apiUrl = '$baseUrl/fetch-data'; // Modify the endpoint for user data
+    Map<String, dynamic> requestBody ={};
+    requestBody['email']= email;
+    requestBody['secret_key'] = password;
+    return await postRequest(requestBody ,apiUrl);
+  }
+
   static Future<String?> checkToken() async {
     // Check if token exists
     const  storage =  FlutterSecureStorage();

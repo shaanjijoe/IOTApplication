@@ -90,6 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if(save && save2){
         // popUp('Saved successfully');
         popUpCenter(token);
+        Navigator.pushNamed(context, '/homepage');
       } else {
         popUp('Failed Saving');
       }

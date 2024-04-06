@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+// import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iot_app/logicscripts/Database/DataModel.dart';
+import 'package:iot_app/pages/Concentration.dart';
 // import 'package:iot_app/pages/authPage.dart';
 import 'package:iot_app/pages/homePage.dart';
 // import 'package:iot_app/pages/loginPage.dart';
 import 'package:iot_app/pages/loginorregister.dart';
+import 'package:iot_app/pages/temperature.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -29,8 +31,10 @@ class MyApp extends StatelessWidget {
 
       home: const LoginOrRegister(),
       routes: {
-        '/homepage' : (context) => HomePage(),
-        '/loginorregister': (context) => LoginOrRegister(),
+        '/homepage' : (context) => const HomePage(),
+        '/loginorregister': (context) => const LoginOrRegister(),
+        '/concentration' : (context) => const Concentration(),
+        '/temperature' : (context) => const Temperature(),
       },
     );
   }

@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
       if(save && save2){
         // popUp('Saved successfully');
         // popUpCenter(password);
-        Navigator.pushReplacementNamed(context, '/homepage');
+        Navigator.pushNamed(context, '/homepage');
       } else {
         popUp('Failed Saving');
       }
