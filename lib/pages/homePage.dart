@@ -73,6 +73,14 @@ class _HomePageState extends State<HomePage> {
     // final double tabwidth = 300;
     // final double tabheight = 200;
 
+
+    void popUp(String message) {
+      final snackBar = SnackBar(
+        content: Text(message),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
     void getData() async {
 
       var dat = await FetchData.readInfo();
@@ -109,9 +117,11 @@ class _HomePageState extends State<HomePage> {
 
 
         if(latest == null){
+          latest = timestamp;
             await FetchData.insertInfo(altitude, concentration, humidity, pressure, rain, temperature, timestamp);
         }else {
           if(timestamp.isAfter(latest!)){
+            latest = timestamp;
             await FetchData.insertInfo(altitude, concentration, humidity, pressure, rain, temperature, timestamp);
           }
         }
@@ -123,25 +133,7 @@ class _HomePageState extends State<HomePage> {
 
       }
 
-      // for(var item in lst) {
-      //
-      //   for( var param in params) {
-      //
-      //     graph[param]?.add(Pair(item['timestamp'], item[param]));
-      //     stats[param]?.add(item[param]);
-      //
-      //   }
-      //   // print(item['Concentration']);
-      //   // dataList.add(Pair(item['timestamp'], item['Concentration']));
-      //   // randomData.add(item['Concentration']);
-      // }
-      //
-      //
-      // for( var param in params) {
-      //   for( var item in stats[param]!){
-      //     print(item.toString());
-      //   }
-      // }
+      popUp("Latest Data: " + latest.toString());
 
     }
 
@@ -163,12 +155,6 @@ class _HomePageState extends State<HomePage> {
       );// AlertDialog
     }
 
-    void popUp(String message) {
-      final snackBar = SnackBar(
-        content: Text(message),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
 
     void logout () async {
       bool save = await FetchData.writeData('email', null);
@@ -208,18 +194,37 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
+
                         Container(
                           decoration: BoxDecoration(
-                            shape: BoxShape.circle,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(20),
                             color: Colors.white, // Adjust the color as needed
                             border: Border.all(color: Colors.grey.shade800, width: 2),
                           ),
-                          child: IconButton(
-                            onPressed: getData,
-                            icon: Icon(Icons.sync),
-                            iconSize: isTablet ? 40 : 20, // Adjust the size based on the device type
-                            color: Colors.black, // Adjust the icon color as needed
-                            tooltip: 'Sync Data',
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: getData,
+                                icon: Icon(Icons.sync),
+                                iconSize: isTablet ? 30 : 20, // Adjust the size based on the device type
+                                color: Colors.black, // Adjust the icon color as needed
+                                tooltip: 'Sync Data',
+                              ),
+
+                              SizedBox(width: 10,),
+                              IconButton(
+                                onPressed: () {
+                                  // Navigate to the settings page
+                                  Navigator.pushNamed(context, '/settings');
+                                },
+                                icon: Icon(Icons.settings),
+                                iconSize: isTablet ? 30 : 20,
+                                color: Colors.black,
+                                tooltip: 'Settings',
+                              ),
+
+                            ],
                           ),
                         ),
                       ],
@@ -235,51 +240,6 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: isTablet ? 50 : 30),
 
 
-                  // SizedBox(height: 50,),
-                  //
-                  // Center(
-                  //   child: Row(
-                  //     children: [
-                  //       Container(
-                  //         padding: const EdgeInsets.all(25),
-                  //         margin: EdgeInsets.symmetric(horizontal: 10),
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.black,
-                  //           borderRadius: BorderRadius.circular (10),
-                  //         ), // BoxDecoration child: const Center(
-                  //         child: const  Center(
-                  //           child: Text(
-                  //             'Air Quality',
-                  //             style: TextStyle(
-                  //               color: Colors.white,
-                  //               fontWeight: FontWeight.bold,
-                  //               fontSize: 30,
-                  //             ), // TextStyle
-                  //           ),
-                  //         ), // Text ), // Center
-                  //       ),
-                  //
-                  //       Container(
-                  //         padding: const EdgeInsets.all(25),
-                  //         margin: EdgeInsets.symmetric(horizontal: 10),
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.black,
-                  //           borderRadius: BorderRadius.circular (10),
-                  //         ), // BoxDecoration child: const Center(
-                  //         child: const  Center(
-                  //           child: Text(
-                  //             'Air Quality',
-                  //             style: TextStyle(
-                  //               color: Colors.white,
-                  //               fontWeight: FontWeight.bold,
-                  //               fontSize: 30,
-                  //             ), // TextStyle
-                  //           ),
-                  //         ), // Text ), // Center
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -292,7 +252,7 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      RoundedTab(text: 'Pressure', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,),
+                      GestureDetector(onTap: () {Navigator.pushNamed(context, '/pressure');}  ,child: RoundedTab(text: 'Pressure', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,)),
                       RoundedTab(text: 'Altitude', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,),
                     ],
                   ),
