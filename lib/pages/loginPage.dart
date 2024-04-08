@@ -25,6 +25,55 @@ class _LoginPageState extends State<LoginPage> {
 
   final passwordController = TextEditingController();
 
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Call autoSignIn when the widget is initialized
+    autoSignIn();
+  }
+
+  void autoSignIn() async {
+    setState(() {_isLoading = true;});
+    // Check if email and password are already saved
+    String? savedEmail = await FetchData.readData('email');
+    String? savedPassword = await FetchData.checkToken();
+    if (savedEmail != null && savedPassword != null) {
+      // Automatically sign in with saved credentials
+      // signIn(savedEmail, savedPassword);
+      emailController.text = savedEmail!;
+      passwordController.text = savedPassword!;
+
+
+      final result = await FetchData.connectionStatus();
+
+      if (result["error"] == "incomplete request") {
+        setState(() {_isLoading = false;});
+        // popUpCenter("Error Making Request");
+        return;
+      }
+
+      final result2 = await FetchData.login(savedEmail, savedPassword);
+
+      if (result2["error"] == "incomplete request") {
+        setState(() {_isLoading = false;});
+        // popUpCenter("Parameter Absent");
+        return;
+      }
+
+      setState(() {_isLoading = false;});
+      if (result2["status"] == true){
+        Navigator.pushNamed(context, '/homepage');
+      }
+
+
+    }
+  }
+
+
+
+
 
 
   @override
@@ -58,11 +107,18 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     void signIn() async{
+
+      setState(() {
+        _isLoading = true;
+      });
+
+
       final result = await FetchData.connectionStatus();
 
       // Check the result and call the popUp function accordingly
       // popUp(jsonEncode(result));
       if (result["error"] == "incomplete request") {
+        setState(() {_isLoading = false;});
         popUpCenter("Error Making Request");
         return;
       }
@@ -73,6 +129,7 @@ class _LoginPageState extends State<LoginPage> {
       final result2 = await FetchData.login(email, password);
 
       if (result2["error"] == "incomplete request") {
+        setState(() {_isLoading = false;});
         popUpCenter("Parameter Absent");
         return;
       }
@@ -84,6 +141,7 @@ class _LoginPageState extends State<LoginPage> {
       if (result2["status"] == false) {
         // popUp(jsonEncode(result2));
         // return;
+        setState(() {_isLoading = false;});
         if(result2["error"]=="404"){
           popUpCenter("Email not registered");
         } else if (result2["error"]=="401"){
@@ -100,6 +158,7 @@ class _LoginPageState extends State<LoginPage> {
       bool save = await FetchData.writeToken(password);
       bool save2 = await FetchData.writeData("email", email);
 
+      setState(() {_isLoading = false;});
       if(save && save2){
         // popUp('Saved successfully');
         // popUpCenter(password);
@@ -184,6 +243,8 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: isTablet ? 50: 25,),
 
 
+                _isLoading ?
+                CircularProgressIndicator():
                 MyButton(
                   message: 'Sign In',
                   onTap: signIn,),
