@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-// import 'package:iot_app/components/my_button.dart';
+import 'package:iot_app/components/active_button.dart';
 import 'package:iot_app/components/my_chart.dart';
 import 'package:iot_app/components/my_stats.dart';
 import 'package:iot_app/logicscripts/FetchData.dart';
-
 import '../logicscripts/Database/DataModel.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import '../logicscripts/GlobalData.dart';
 
 class Concentration extends StatefulWidget {
   const Concentration({super.key,
@@ -21,10 +22,24 @@ class _ConcentrationState extends State<Concentration> {
   // 10.5, 20.3, 15.7, 25.8, 30.2, 18.6, 12.4, 22.9, 28.0, 35.1,
   List<double> randomData = [];
 
+  // final SocketService _socketService = SocketService();
+  late IO.Socket socket;
+  bool socketConnected = false;
+  bool buttonState = false;
+  bool listening = false;
+
+
   @override
   void initState() {
     super.initState();
     loadData();
+    connectToServer();
+  }
+
+  @override
+  void dispose() {
+    socket.dispose();
+    super.dispose();
   }
 
   Future<void> loadData() async {
@@ -41,12 +56,56 @@ class _ConcentrationState extends State<Concentration> {
     }
   }
 
+  void setConnect(){
+    print("Got here");
+    socketConnected = true;
+    print(socketConnected);
+  }
+
+  void stopConnect(){
+    print("Outta here");
+    socketConnected = false;
+    print(socketConnected);
+  }
+
+  void connectToServer() {
+    String? email = GlobalData().email;
+    String? authorization = GlobalData().secret_key;
+    try {
+      socket = IO.io('https://fast-api-sample-9b2d.onrender.com', <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': false,
+        'extraHeaders': {
+          'EMAIL': '$email',
+          'AUTHORIZATION': '$authorization',
+        },
+      });
+
+      socket.connect();
+
+      socket.on('connect', (_) {
+        print('connect: ${socket.id}');
+        setConnect();
+      });
+
+      socket.on('disconnect', (_) {
+        print('disconnect');
+        stopConnect();
+      });
+
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
     final bool isTablet = screenWidth >= 600;
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -75,29 +134,45 @@ class _ConcentrationState extends State<Concentration> {
                 //
                 const SizedBox(height: 20,),
 
+                ActiveButton(onTap: () {
+
+                  print(socketConnected);
+
+                  if(buttonState == false) {
+
+                    if(socketConnected == true && listening == false){
+
+                        socket.on('data-post', (data) {
+                          print(data.toString());
+                        });
+
+                        listening = true;
+                    }
+                    buttonState = !buttonState;
+
+                  } else {
+
+                    if(socketConnected == true && listening == true){
+
+                      socket.off('data-post');
+
+                      listening = false;
+                    }
+                    buttonState = !buttonState;
+
+                  }
+
+
+                } , message: "Live Data", activeMessage: "Stop Live"),
+
+                const SizedBox(height: 20,),
+
                 StatsWidget(
                   heading: 'Statistics',
                   data: randomData,
                   unit: 'ppm',
                 ),
 
-                // MyButton(onTap: () async {
-                //   String? email2 = await FetchData.readData("email");
-                //   String? key2 = await FetchData.checkToken();
-                //   String email = email2 ?? "";
-                //   String password = key2 ?? "";
-                //
-                //   dynamic data = await FetchData.fetchInfo(email, password) ;
-                //   List<dynamic> lst = data['data'];
-                //
-                //   for(var item in lst) {
-                //     // print(item['Concentration']);
-                //     dataList.add(Pair(item['timestamp'], item['Concentration']));
-                //     randomData.add(item['Concentration']);
-                //   }
-                //
-                //
-                // }, message: 'Fetch data')
 
 
 

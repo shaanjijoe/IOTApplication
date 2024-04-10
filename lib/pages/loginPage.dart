@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:iot_app/components/my_button.dart';
 import 'package:iot_app/components/my_text_field.dart';
 import 'package:iot_app/components/square_tile.dart';
+import 'package:iot_app/logicscripts/GlobalData.dart';
 
 import '../logicscripts/FetchData.dart';
 
@@ -35,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void autoSignIn() async {
-    setState(() {_isLoading = true;});
+    // setState(() {_isLoading = true;});
     // Check if email and password are already saved
     String? savedEmail = await FetchData.readData('email');
     String? savedPassword = await FetchData.checkToken();
@@ -49,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
       final result = await FetchData.connectionStatus();
 
       if (result["error"] == "incomplete request") {
-        setState(() {_isLoading = false;});
+        // setState(() {_isLoading = false;});
         // popUpCenter("Error Making Request");
         return;
       }
@@ -57,14 +58,16 @@ class _LoginPageState extends State<LoginPage> {
       final result2 = await FetchData.login(savedEmail, savedPassword);
 
       if (result2["error"] == "incomplete request") {
-        setState(() {_isLoading = false;});
+        // setState(() {_isLoading = false;});
         // popUpCenter("Parameter Absent");
         return;
       }
 
-      setState(() {_isLoading = false;});
+      // setState(() {_isLoading = false;});
       if (result2["status"] == true){
-        Navigator.pushNamed(context, '/homepage');
+        GlobalData().setEmail(savedEmail);
+        GlobalData().setSecret(savedPassword);
+        Navigator.pushReplacementNamed(context, '/homepage');
       }
 
 
@@ -162,7 +165,9 @@ class _LoginPageState extends State<LoginPage> {
       if(save && save2){
         // popUp('Saved successfully');
         // popUpCenter(password);
-        Navigator.pushNamed(context, '/homepage');
+        GlobalData().setEmail(email);
+        GlobalData().setSecret(password);
+        Navigator.pushReplacementNamed(context, '/homepage');
       } else {
         popUp('Failed Saving');
       }

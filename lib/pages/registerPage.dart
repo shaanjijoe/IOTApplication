@@ -7,6 +7,7 @@ import 'package:iot_app/components/my_text_field.dart';
 import 'package:iot_app/components/square_tile.dart';
 
 import '../logicscripts/FetchData.dart';
+import '../logicscripts/GlobalData.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? loginregistertoggler;
@@ -90,7 +91,9 @@ class _RegisterPageState extends State<RegisterPage> {
       if(save && save2){
         // popUp('Saved successfully');
         popUpCenter(token);
-        Navigator.pushNamed(context, '/homepage');
+        GlobalData().setEmail(email);
+        GlobalData().setSecret(token);
+        Navigator.pushReplacementNamed(context, '/homepage');
       } else {
         popUp('Failed Saving');
       }

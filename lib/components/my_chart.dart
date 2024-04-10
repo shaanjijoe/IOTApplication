@@ -14,6 +14,29 @@ class MyChart extends StatefulWidget {
 }
 
 class _MyChartState extends State<MyChart> {
+
+  List<Pair> _data = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _data = widget.pairDataList;
+  }
+
+  void updateChart(Pair newData) {
+    setState(() {
+      // Add new data to the existing data list
+      // _data.addAll(newData);
+      _data.add(newData);
+
+      if(_data.length >20) {
+        _data.removeAt(0);
+      }
+
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
