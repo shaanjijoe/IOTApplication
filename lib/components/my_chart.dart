@@ -68,6 +68,7 @@ class _MyChartState extends State<MyChart> {
               //   SalesData(180, 'Fri'),
               //   SalesData(30, 'Sat'),
               // ],
+
                 dataSource: widget.pairDataList,
                 // xValueMapper: (SalesData sales,_) => sales.date,
                 // yValueMapper: (SalesData sales,_) => sales.sales,

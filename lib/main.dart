@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iot_app/logicscripts/Database/DataModel.dart';
 import 'package:iot_app/pages/Concentration.dart';
+import 'package:iot_app/pages/altitude.dart';
 // import 'package:iot_app/pages/authPage.dart';
 import 'package:iot_app/pages/homePage.dart';
+import 'package:iot_app/pages/humidity.dart';
 // import 'package:iot_app/pages/loginPage.dart';
 import 'package:iot_app/pages/loginorregister.dart';
 import 'package:iot_app/pages/pressure.dart';
@@ -39,6 +41,8 @@ class MyApp extends StatelessWidget {
         '/temperature' : (context) => const Temperature(),
         '/pressure' : (context) => const Pressure(),
         '/settings' : (context) => const Settings(),
+        '/altitude' : (context) => const Altitude(),
+        '/humidity' : (context) => const Humidity(),
       },
     );
   }

@@ -8,15 +8,15 @@ import '../logicscripts/Database/DataModel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../logicscripts/GlobalData.dart';
 
-class Pressure extends StatefulWidget {
-  const Pressure({super.key,
+class Altitude extends StatefulWidget {
+  const Altitude({super.key,
   });
 
   @override
-  State<Pressure> createState() => _PressureState();
+  State<Altitude> createState() => _AltitudeState();
 }
 
-class _PressureState extends State<Pressure> {
+class _AltitudeState extends State<Altitude> {
 
   // Pair('2022-01-01', 100),
   List<Pair> dataList = [];
@@ -47,9 +47,9 @@ class _PressureState extends State<Pressure> {
       final List<DataModel> fetchedData = await FetchData.readInfo();
 
       setState(() {
-        dataList = fetchedData.map((data) => Pair(data.timestamp.toString(), data.pressure)).toList();
+        dataList = fetchedData.map((data) => Pair(data.timestamp.toString(), data.altitude)).toList();
 
-        randomData = fetchedData.map((data) => data.pressure).toList();
+        randomData = fetchedData.map((data) => data.altitude).toList();
       });
     } catch (e) {
       print('Error loading data: $e');
@@ -100,24 +100,24 @@ class _PressureState extends State<Pressure> {
   }
 
   Pair? processor(dynamic jsonData){
-    // Check if 'pressure' field exists
-    double Pressure = 0.0;
+    // Check if 'Altitude' field exists
+    double Altitude = 0.0;
     String timestamp = "";
-    if (jsonData.containsKey('Pressure')) {
-      // Check if 'Pressure' is an integer
-      if (jsonData['Pressure'] is int) {
-        // Convert 'Pressure' to double
-        Pressure = jsonData['Pressure'].toDouble();
-        // print('Pressure (converted to double): $Pressure');
-      } else if (jsonData['Pressure'] is double) {
-        Pressure = jsonData['Pressure'];
-        // If 'Pressure' is already a double, no need to convert
-        // print('Pressure: ${jsonData['Pressure']}');
+    if (jsonData.containsKey('Altitude')) {
+      // Check if 'Altitude' is an integer
+      if (jsonData['Altitude'] is int) {
+        // Convert 'Altitude' to double
+        Altitude = jsonData['Altitude'].toDouble();
+        // print('Altitude (converted to double): $Altitude');
+      } else if (jsonData['Altitude'] is double) {
+        Altitude = jsonData['Altitude'];
+        // If 'Altitude' is already a double, no need to convert
+        // print('Altitude: ${jsonData['Altitude']}');
       } else {
         return null;
       }
     } else {
-      // print('Pressure not found');
+      // print('Altitude not found');
       return null;
     }
 
@@ -131,7 +131,7 @@ class _PressureState extends State<Pressure> {
       // print('Timestamp not found');
     }
 
-    return Pair(timestamp, Pressure);
+    return Pair(timestamp, Altitude);
 
   }
 
@@ -208,7 +208,7 @@ class _PressureState extends State<Pressure> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Pressure", style: TextStyle(fontSize: isTablet ?  60 : 30, fontWeight: FontWeight.bold),),
+                      Text("Altitude", style: TextStyle(fontSize: isTablet ?  60 : 30, fontWeight: FontWeight.bold),),
 
                       // SizedBox(width: 10), // Add space between text and icon
                       // // Circular icon indicating connection status
@@ -226,7 +226,7 @@ class _PressureState extends State<Pressure> {
                 ),
 
 
-                MyChart(pairDataList: dataList,xaxis: 'Time', yaxis: 'Pressure',),
+                MyChart(pairDataList: dataList,xaxis: 'Time', yaxis: 'Altitude',),
                 //
                 const SizedBox(height: 20,),
 
@@ -260,7 +260,7 @@ class _PressureState extends State<Pressure> {
                 StatsWidget(
                   heading: 'Statistics',
                   data: randomData,
-                  unit: 'Pa',
+                  unit: 'm',
                 ),
 
 
@@ -276,4 +276,3 @@ class _PressureState extends State<Pressure> {
     );
   }
 }
-

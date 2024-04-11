@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/logicscripts/GlobalData.dart';
 
+import '../components/back_button.dart';
 import '../components/rounded_tab.dart';
 
 class Settings extends StatelessWidget {
@@ -7,14 +9,17 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String email ="";
-    String key ="";
+    String email = GlobalData().email!;
+    String key = GlobalData().secret_key!;
     final bool isTablet = MediaQuery.of(context).size.width >= 600;
     final double fontSize = isTablet ? 30 : 16;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      // backgroundColor: Colors.white70,
+      appBar: AppBar(
+        leading: const BackButtonWidget(),
+      ),
       body:  SafeArea( // avoiding notch area
         child: Center( // centering all
           child: SingleChildScrollView(
@@ -46,7 +51,7 @@ class Settings extends StatelessWidget {
                 // RoundedTab(text: 'Secret Key: ' + key, width: screenWidth * 0.8, height: 50,),
                 SizedBox(height: isTablet ? 50 : 30),
 
-                RoundedTab(text: 'Key: $key', width: screenWidth * 0.8, height: isTablet ? 70.0 : 50.0 ,fontSize: isTablet ? 30.0 : 20.0,),
+                RoundedTab(text: 'Key: $key', width: screenWidth * 0.8, height: isTablet ? 70.0 : 50.0 ,fontSize: isTablet ? 30.0 : 13.0,),
                 // SizedBox(height: 10),
                 // RoundedTab(text: 'Secret Key: ' + key, width: screenWidth * 0.8, height: 50,),
                 SizedBox(height: isTablet ? 50 : 30),

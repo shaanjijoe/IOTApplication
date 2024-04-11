@@ -8,15 +8,15 @@ import '../logicscripts/Database/DataModel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../logicscripts/GlobalData.dart';
 
-class Pressure extends StatefulWidget {
-  const Pressure({super.key,
+class Humidity extends StatefulWidget {
+  const Humidity({super.key,
   });
 
   @override
-  State<Pressure> createState() => _PressureState();
+  State<Humidity> createState() => _HumidityState();
 }
 
-class _PressureState extends State<Pressure> {
+class _HumidityState extends State<Humidity> {
 
   // Pair('2022-01-01', 100),
   List<Pair> dataList = [];
@@ -47,9 +47,9 @@ class _PressureState extends State<Pressure> {
       final List<DataModel> fetchedData = await FetchData.readInfo();
 
       setState(() {
-        dataList = fetchedData.map((data) => Pair(data.timestamp.toString(), data.pressure)).toList();
+        dataList = fetchedData.map((data) => Pair(data.timestamp.toString(), data.humidity)).toList();
 
-        randomData = fetchedData.map((data) => data.pressure).toList();
+        randomData = fetchedData.map((data) => data.humidity).toList();
       });
     } catch (e) {
       print('Error loading data: $e');
@@ -100,24 +100,24 @@ class _PressureState extends State<Pressure> {
   }
 
   Pair? processor(dynamic jsonData){
-    // Check if 'pressure' field exists
-    double Pressure = 0.0;
+    // Check if 'Humidity' field exists
+    double Humidity = 0.0;
     String timestamp = "";
-    if (jsonData.containsKey('Pressure')) {
-      // Check if 'Pressure' is an integer
-      if (jsonData['Pressure'] is int) {
-        // Convert 'Pressure' to double
-        Pressure = jsonData['Pressure'].toDouble();
-        // print('Pressure (converted to double): $Pressure');
-      } else if (jsonData['Pressure'] is double) {
-        Pressure = jsonData['Pressure'];
-        // If 'Pressure' is already a double, no need to convert
-        // print('Pressure: ${jsonData['Pressure']}');
+    if (jsonData.containsKey('Humidity')) {
+      // Check if 'Humidity' is an integer
+      if (jsonData['Humidity'] is int) {
+        // Convert 'Humidity' to double
+        Humidity = jsonData['Humidity'].toDouble();
+        // print('Humidity (converted to double): $Humidity');
+      } else if (jsonData['Humidity'] is double) {
+        Humidity = jsonData['Humidity'];
+        // If 'Humidity' is already a double, no need to convert
+        // print('Humidity: ${jsonData['Humidity']}');
       } else {
         return null;
       }
     } else {
-      // print('Pressure not found');
+      // print('Humidity not found');
       return null;
     }
 
@@ -131,7 +131,7 @@ class _PressureState extends State<Pressure> {
       // print('Timestamp not found');
     }
 
-    return Pair(timestamp, Pressure);
+    return Pair(timestamp, Humidity);
 
   }
 
@@ -208,7 +208,7 @@ class _PressureState extends State<Pressure> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Pressure", style: TextStyle(fontSize: isTablet ?  60 : 30, fontWeight: FontWeight.bold),),
+                      Text("Humidity", style: TextStyle(fontSize: isTablet ?  60 : 30, fontWeight: FontWeight.bold),),
 
                       // SizedBox(width: 10), // Add space between text and icon
                       // // Circular icon indicating connection status
@@ -226,7 +226,7 @@ class _PressureState extends State<Pressure> {
                 ),
 
 
-                MyChart(pairDataList: dataList,xaxis: 'Time', yaxis: 'Pressure',),
+                MyChart(pairDataList: dataList,xaxis: 'Time', yaxis: 'Humidity',),
                 //
                 const SizedBox(height: 20,),
 
@@ -260,7 +260,7 @@ class _PressureState extends State<Pressure> {
                 StatsWidget(
                   heading: 'Statistics',
                   data: randomData,
-                  unit: 'Pa',
+                  unit: 'gm-3',
                 ),
 
 
@@ -276,4 +276,5 @@ class _PressureState extends State<Pressure> {
     );
   }
 }
+
 

@@ -3,6 +3,7 @@ import 'package:iot_app/components/active_button.dart';
 import 'package:iot_app/components/my_chart.dart';
 import 'package:iot_app/components/my_stats.dart';
 import 'package:iot_app/logicscripts/FetchData.dart';
+import '../components/back_button.dart';
 import '../logicscripts/Database/DataModel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../logicscripts/GlobalData.dart';
@@ -22,7 +23,6 @@ class _ConcentrationState extends State<Concentration> {
   // 10.5, 20.3, 15.7, 25.8, 30.2, 18.6, 12.4, 22.9, 28.0, 35.1,
   List<double> randomData = [];
 
-  // final SocketService _socketService = SocketService();
   late IO.Socket socket;
   bool socketConnected = false;
   bool buttonState = false;
@@ -95,6 +95,92 @@ class _ConcentrationState extends State<Concentration> {
 
     } catch (e) {
       print(e.toString());
+      stopConnect();
+    }
+  }
+
+  Pair? processor(dynamic jsonData){
+    // Check if 'concentration' field exists
+    double Concentration = 0.0;
+    String timestamp = "";
+    if (jsonData.containsKey('Concentration')) {
+      // Check if 'concentration' is an integer
+      if (jsonData['Concentration'] is int) {
+        // Convert 'concentration' to double
+        Concentration = jsonData['Concentration'].toDouble();
+        // print('Concentration (converted to double): $concentration');
+      } else if (jsonData['Concentration'] is double) {
+        Concentration = jsonData['Concentration'];
+        // If 'concentration' is already a double, no need to convert
+        // print('Concentration: ${jsonData['concentration']}');
+      } else {
+        return null;
+      }
+    } else {
+      // print('Concentration not found');
+      return null;
+    }
+
+    // Check if 'timestamp' field exists
+    if (jsonData.containsKey('timestamp')) {
+      // Convert 'timestamp' to string
+      timestamp = jsonData['timestamp'].toString();
+      // print('Timestamp (converted to string): $timestamp');
+    } else {
+      return null;
+      // print('Timestamp not found');
+    }
+
+    return Pair(timestamp, Concentration);
+
+  }
+
+  void noLiveMode(){
+
+    if(socketConnected == true && listening == true){
+      socket.off('data-post');
+      listening = false;
+    }
+
+    setState(() {
+      dataList.clear();
+      randomData.clear();
+    });
+
+    loadData().then((value) => print("Loaded old data"));
+
+  }
+
+
+  void liveMode(){
+
+    setState(() {
+      dataList.clear();
+      randomData.clear();
+    });
+
+    if(socketConnected == true && listening == false){
+      socket.on('data-post', (data) {
+        print(data.toString());
+
+        Pair? dat = processor(data);
+        if(dat!=null){
+
+          setState(() {
+              dataList.add(dat);
+              randomData.add(dat.Yint);
+
+              if(dataList.length>100){
+                dataList.removeAt(0);
+                randomData.removeAt(0);
+              }
+          });
+        }
+
+      });
+
+
+      listening = true;
     }
   }
 
@@ -105,11 +191,9 @@ class _ConcentrationState extends State<Concentration> {
     double screenWidth = MediaQuery.of(context).size.width;
     final bool isTablet = screenWidth >= 600;
 
-
-
     return Scaffold(
       appBar: AppBar(
-        leading: BackButtonWidget(),
+        leading: const BackButtonWidget(),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -125,6 +209,18 @@ class _ConcentrationState extends State<Concentration> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text("Concentration", style: TextStyle(fontSize: isTablet ?  60 : 30, fontWeight: FontWeight.bold),),
+
+                      // SizedBox(width: 10), // Add space between text and icon
+                      // // Circular icon indicating connection status
+                      // Container(
+                      //   width: 20,
+                      //   height: 20,
+                      //   decoration: BoxDecoration(
+                      //     shape: BoxShape.circle,
+                      //     color: socketConnected ? Colors.green : Colors.red,
+                      //   ),
+                      // ),
+
                     ],
                   ),
                 ),
@@ -140,24 +236,18 @@ class _ConcentrationState extends State<Concentration> {
 
                   if(buttonState == false) {
 
-                    if(socketConnected == true && listening == false){
-
-                        socket.on('data-post', (data) {
-                          print(data.toString());
-                        });
-
-                        listening = true;
-                    }
+                    liveMode();
                     buttonState = !buttonState;
 
                   } else {
 
-                    if(socketConnected == true && listening == true){
-
-                      socket.off('data-post');
-
-                      listening = false;
-                    }
+                    noLiveMode();
+                    // if(socketConnected == true && listening == true){
+                    //
+                    //   socket.off('data-post');
+                    //
+                    //   listening = false;
+                    // }
                     buttonState = !buttonState;
 
                   }
@@ -187,14 +277,3 @@ class _ConcentrationState extends State<Concentration> {
   }
 }
 
-class BackButtonWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-  }
-}

@@ -1,12 +1,8 @@
-import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:iot_app/components/my_button.dart';
 import 'package:iot_app/components/rounded_tab.dart';
 import 'package:iot_app/logicscripts/FetchData.dart';
 
-import '../components/my_chart.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -81,12 +77,59 @@ class _HomePageState extends State<HomePage> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
 
+    Map<String, dynamic>? validateAndConvertParameters(Map<String, dynamic> item) {
+      try {
+        // List of required keys
+        final requiredKeys = ['Altitude', 'Concentration', 'Humidity', 'Pressure', 'Temperature', 'Raining'];
+
+        // Check if any required key is missing
+        if (requiredKeys.any((key) => !item.containsKey(key))) {
+          return null;
+        }
+
+        // Create a new map to avoid modifying the original
+        Map<String, dynamic> newItem = Map<String, dynamic>.from(item);
+
+        // Convert each parameter
+        bool check = false;
+        newItem.forEach((key, value) {
+          if (value is num) {
+            newItem[key] = value.toDouble();
+          } else if (key == 'Raining' && value is int) {
+            newItem[key] = value == 1;
+          } else if(key == 'timestamp') {
+            try {
+              DateTime timestamp = DateTime.parse(value);
+              newItem[key] = timestamp;
+            } catch (e) {
+              // newItem = null; // Invalid timestamp format
+              check = true;
+            }
+
+          } else {
+            check = true;
+          }
+        });
+
+        if(check == true){
+          return null;
+        }
+
+        // All parameters validated and converted successfully
+        return newItem;
+      } catch (e) {
+        // Exception occurred during validation/conversion
+        return null;
+      }
+    }
+
+
     void getData() async {
 
       var dat = await FetchData.readInfo();
       // print(dat.length);
-      DateTime? latest = null;
-      if(dat.length>0){
+      DateTime? latest;
+      if(dat.isNotEmpty){
         latest = dat[dat.length-1].timestamp;
       }
 
@@ -102,10 +145,15 @@ class _HomePageState extends State<HomePage> {
 
 
       // print(lst == null);
-      for(var item in lst) {
-        DateTime timestamp = DateTime.parse(item['timestamp']);
+      for(var item2 in lst) {
+
+        DateTime timestamp = DateTime.parse(item2['timestamp']);
         double altitude, concentration, humidity, pressure,  temperature;
         bool rain;
+        dynamic item = validateAndConvertParameters(item2);
+        if(item == null){
+          return;
+        }
         altitude = item['Altitude'];
         concentration = item['Concentration'];
         humidity = item['Humidity'];
@@ -253,15 +301,17 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       GestureDetector(onTap: () {Navigator.pushNamed(context, '/pressure');}  ,child: RoundedTab(text: 'Pressure', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,)),
-                      RoundedTab(text: 'Altitude', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,),
+                      GestureDetector(onTap: () {Navigator.pushNamed(context, '/altitude');}  ,child: RoundedTab(text: 'Altitude', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,)),
                     ],
                   ),
                   SizedBox(height: isTablet ? 40 : 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      RoundedTab(text: 'Humidity', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,),
-                      RoundedTab(text: 'Raining/Not Raining', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,),
+                      GestureDetector(onTap: () {Navigator.pushNamed(context, '/humidity');}  ,child: RoundedTab(text: 'Humidity', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,)),
+                      GestureDetector(onTap: () {
+                        // Navigator.pushNamed(context, '/raining');
+                        }  ,child: RoundedTab(text: 'Rain', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,)),
                     ],
                   ),
 
@@ -274,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: logout,
                       message: 'Log Out'),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                 ],
               ),
