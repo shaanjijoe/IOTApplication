@@ -43,7 +43,16 @@ class _StatsWidgetState extends State<StatsWidget> {
 
 
   void _calculateStatistics() {
-    if (widget.data.isEmpty) return;
+    if (widget.data.isEmpty) {
+      mean=0.0;
+      min=0.0;
+      max=0.0;
+      median=0.0;
+      stdDev=0.0;
+      q1=0.0;
+      q3=0.0;
+      return;
+    }
 
     mean = widget.data.reduce((value, element) => value + element) / widget.data.length;
     min = widget.data.reduce((min, value) => min < value ? min : value);
