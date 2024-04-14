@@ -40,13 +40,13 @@ class _MyChartState extends State<MyChart> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10), // Optional padding
+      padding: const EdgeInsets.all(10), // Optional padding
       decoration: BoxDecoration(
         // border: Border.all(color: Colors.black, width: 1.0), // Border decoration
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(10.0),
       ),
-      margin: EdgeInsets.symmetric(horizontal: 18.0),
+      margin: const EdgeInsets.symmetric(horizontal: 18.0),
       child: Container(
           width: double.infinity,
           height: 300,

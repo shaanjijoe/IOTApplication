@@ -101,7 +101,7 @@ class _StatsWidgetState extends State<StatsWidget> {
               fontSize:  isTablet ? 22.0 : 18.0,
             ),
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           _buildDataField('Mean', mean),
           _buildDataField('Min', min),
           _buildDataField('Max', max),
@@ -117,6 +117,7 @@ class _StatsWidgetState extends State<StatsWidget> {
   Widget _buildDataField(String label, double value) {
     double screenWidth = MediaQuery.of(context).size.width;
     final bool isTablet = screenWidth >= 600;
+    String val = value.toStringAsFixed(3);
     return Row(
       children: [
         Expanded(
@@ -125,7 +126,7 @@ class _StatsWidgetState extends State<StatsWidget> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: isTablet ? 20 : 15),
           ),
         ),
-        Text('$value ${widget.unit}', style: TextStyle(fontSize: isTablet ? 20 : 15),), // Add unit here
+        Text('$val ${widget.unit}', style: TextStyle(fontSize: isTablet ? 20 : 15),), // Add unit here
       ],
     );
   }

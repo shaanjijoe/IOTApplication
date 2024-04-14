@@ -123,6 +123,42 @@ class _HomePageState extends State<HomePage> {
       }
     }
 
+    // bool processor(dynamic jsonData){
+    //   // Check if 'Altitude' field exists
+    //   double Altitude = 0.0;
+    //   String timestamp = "";
+    //   if (jsonData.containsKey('Altitude')) {
+    //     // Check if 'Altitude' is an integer
+    //     if (jsonData['Altitude'] is int) {
+    //       // Convert 'Altitude' to double
+    //       Altitude = jsonData['Altitude'].toDouble();
+    //       // print('Altitude (converted to double): $Altitude');
+    //     } else if (jsonData['Altitude'] is double) {
+    //       Altitude = jsonData['Altitude'];
+    //       // If 'Altitude' is already a double, no need to convert
+    //       // print('Altitude: ${jsonData['Altitude']}');
+    //     } else {
+    //       return null;
+    //     }
+    //   } else {
+    //     // print('Altitude not found');
+    //     return null;
+    //   }
+    //
+    //   // Check if 'timestamp' field exists
+    //   if (jsonData.containsKey('timestamp')) {
+    //     // Convert 'timestamp' to string
+    //     timestamp = jsonData['timestamp'].toString();
+    //     // print('Timestamp (converted to string): $timestamp');
+    //   } else {
+    //     return null;
+    //     // print('Timestamp not found');
+    //   }
+    //
+    //   return true;
+    //
+    // }
+
 
     void getData() async {
 
@@ -143,9 +179,24 @@ class _HomePageState extends State<HomePage> {
         return;
       }
 
+      // print(lst.toString());
+      // return;
+
 
       // print(lst == null);
       for(var item2 in lst) {
+        print(item2.toString());
+        // continue;
+
+        if(!item2.containsKey('timestamp')){
+          continue;
+        } else{
+          try{
+            DateTime.parse(item2['timestamp']);
+          } catch (e){
+            continue;
+          }
+        }
 
         DateTime timestamp = DateTime.parse(item2['timestamp']);
         double altitude, concentration, humidity, pressure,  temperature;
@@ -310,7 +361,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       GestureDetector(onTap: () {Navigator.pushNamed(context, '/humidity');}  ,child: RoundedTab(text: 'Humidity', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,)),
                       GestureDetector(onTap: () {
-                        // Navigator.pushNamed(context, '/raining');
+                        Navigator.pushNamed(context, '/raining');
                         }  ,child: RoundedTab(text: 'Rain', height: tabheight, width: tabwidth,fontSize: isTablet ? 30.0 : 20.0,)),
                     ],
                   ),
