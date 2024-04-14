@@ -100,7 +100,6 @@ class _AltitudeState extends State<Altitude> {
   }
 
   Pair? processor(dynamic jsonData){
-    // Check if 'Altitude' field exists
     double Altitude = 0.0;
     String timestamp = "";
     if (jsonData.containsKey('Altitude')) {
@@ -111,8 +110,6 @@ class _AltitudeState extends State<Altitude> {
         // print('Altitude (converted to double): $Altitude');
       } else if (jsonData['Altitude'] is double) {
         Altitude = jsonData['Altitude'];
-        // If 'Altitude' is already a double, no need to convert
-        // print('Altitude: ${jsonData['Altitude']}');
       } else {
         return null;
       }
@@ -125,14 +122,11 @@ class _AltitudeState extends State<Altitude> {
     if (jsonData.containsKey('timestamp')) {
       // Convert 'timestamp' to string
       timestamp = jsonData['timestamp'].toString();
-      // print('Timestamp (converted to string): $timestamp');
     } else {
       return null;
       // print('Timestamp not found');
     }
-
     return Pair(timestamp, Altitude);
-
   }
 
   void noLiveMode(){
@@ -178,8 +172,6 @@ class _AltitudeState extends State<Altitude> {
         }
 
       });
-
-
       listening = true;
     }
   }
@@ -210,30 +202,18 @@ class _AltitudeState extends State<Altitude> {
                     children: [
                       Text("Altitude", style: TextStyle(fontSize: isTablet ?  60 : 30, fontWeight: FontWeight.bold),),
 
-                      // SizedBox(width: 10), // Add space between text and icon
-                      // // Circular icon indicating connection status
-                      // Container(
-                      //   width: 20,
-                      //   height: 20,
-                      //   decoration: BoxDecoration(
-                      //     shape: BoxShape.circle,
-                      //     color: socketConnected ? Colors.green : Colors.red,
-                      //   ),
-                      // ),
-
                     ],
                   ),
                 ),
 
 
                 MyChart(pairDataList: dataList,xaxis: 'Time', yaxis: 'Altitude',),
-                //
+
                 const SizedBox(height: 20,),
 
                 ActiveButton(onTap: () {
 
-                  print(socketConnected);
-
+                  // print(socketConnected);
                   if(buttonState == false) {
 
                     liveMode();
@@ -242,12 +222,6 @@ class _AltitudeState extends State<Altitude> {
                   } else {
 
                     noLiveMode();
-                    // if(socketConnected == true && listening == true){
-                    //
-                    //   socket.off('data-post');
-                    //
-                    //   listening = false;
-                    // }
                     buttonState = !buttonState;
 
                   }
@@ -262,10 +236,6 @@ class _AltitudeState extends State<Altitude> {
                   data: randomData,
                   unit: 'm',
                 ),
-
-
-
-
 
 
               ],

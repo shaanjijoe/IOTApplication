@@ -210,17 +210,6 @@ class _PressureState extends State<Pressure> {
                     children: [
                       Text("Pressure", style: TextStyle(fontSize: isTablet ?  60 : 30, fontWeight: FontWeight.bold),),
 
-                      // SizedBox(width: 10), // Add space between text and icon
-                      // // Circular icon indicating connection status
-                      // Container(
-                      //   width: 20,
-                      //   height: 20,
-                      //   decoration: BoxDecoration(
-                      //     shape: BoxShape.circle,
-                      //     color: socketConnected ? Colors.green : Colors.red,
-                      //   ),
-                      // ),
-
                     ],
                   ),
                 ),
@@ -232,7 +221,7 @@ class _PressureState extends State<Pressure> {
 
                 ActiveButton(onTap: () {
 
-                  print(socketConnected);
+                  // print(socketConnected);
 
                   if(buttonState == false) {
 
@@ -242,12 +231,6 @@ class _PressureState extends State<Pressure> {
                   } else {
 
                     noLiveMode();
-                    // if(socketConnected == true && listening == true){
-                    //
-                    //   socket.off('data-post');
-                    //
-                    //   listening = false;
-                    // }
                     buttonState = !buttonState;
 
                   }

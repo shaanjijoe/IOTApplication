@@ -13,8 +13,6 @@ class FetchData {
   //   box = Hive.box<DataModel>('DesignLab');
   // }
 
-
-
   // Method to fetch user data
   static Future<Map<String, dynamic>> connectionStatus() async {
     const String apiUrl = '$baseUrl/connection-status'; // Modify the endpoint for user data
@@ -52,25 +50,16 @@ class FetchData {
 
   static Future<String?> checkToken() async {
     // Check if token exists
-    const  storage =  FlutterSecureStorage();
-    String? token = await storage.read(key: 'token');
-    return token;
-    // if (token != null) {
-    //   // Token exists, navigate to the homepage
-    //   Navigator.pushReplacementNamed(context, '/homepage');
-    //   popUpCenter('Token present');
-    // }
-    // else {
-    //   // Token doesn't exist, navigate to the login page
-    //   // Navigator.pushReplacementNamed(context, '/loginpage');
-    //   // Navigator.pop(context);
-    //   Navigator.pushReplacementNamed(context, '/homepage');
-    //   popUpCenter('Token absent');
-    // }
+    try {
+      const storage = FlutterSecureStorage();
+      String? token = await storage.read(key: 'token');
+      return token;
+    } catch (e){
+      return null;
+    }
   }
 
   static Future<bool> writeToken(String str) async {
-    // Check if token exists
     try {
       const storage = FlutterSecureStorage();
       await storage.write(key: 'token', value: str);
@@ -82,7 +71,6 @@ class FetchData {
 
 
   static Future<bool> writeData(String key, String? value) async {
-    // Check if token exists
     try {
       const storage = FlutterSecureStorage();
       await storage.write(key: key, value: value);
@@ -93,10 +81,13 @@ class FetchData {
   }
 
   static Future<String?> readData(String key) async {
-    // Check if token exists
-    const  storage =  FlutterSecureStorage();
-    String? token = await storage.read(key: key);
-    return token;
+    try {
+      const storage = FlutterSecureStorage();
+      String? token = await storage.read(key: key);
+      return token;
+    } catch (e){
+      return null;
+    }
   }
 
   // await FetchData.insertInfo(10.0, 20.0, 30.0, 40.0, false, 100, DateTime.timestamp());
@@ -106,7 +97,7 @@ class FetchData {
       await box.add(DataModel(altitude, concentration, humidity, pressure, rain, temperature, timestamp));
       return true;
     } catch (e) {
-      print('Error inserting data: $e');
+      // print('Error inserting data: $e');
       return false;
     }
   }
@@ -119,7 +110,7 @@ class FetchData {
       dataList.sort((a, b) => a.timestamp.compareTo(b.timestamp));
       return dataList;
     } catch (e) {
-      print('Error reading data: $e');
+      // print('Error reading data: $e');
       return [];
     }
   }
@@ -128,20 +119,11 @@ class FetchData {
     try {
       final box = await Hive.openBox<DataModel>('DesignLab');
       await box.clear();
-
       return true;
     } catch (e) {
-      print('Error erasing data: $e');
+      // print('Error erasing data: $e');
       return false;
     }
   }
 
-// Method to fetch post data
-  // static Future<Map<String, dynamic>> fetchPostData() async {
-  //   final String apiUrl = '$baseUrl/post'; // Modify the endpoint for post data
-  //
-  //   return await fetchData(apiUrl);
-  // }
-
-// Add more methods for different purposes as needed
 }

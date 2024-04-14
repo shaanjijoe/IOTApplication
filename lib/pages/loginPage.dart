@@ -1,12 +1,8 @@
-import 'dart:convert';
-
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iot_app/components/my_button.dart';
 import 'package:iot_app/components/my_text_field.dart';
 import 'package:iot_app/components/square_tile.dart';
 import 'package:iot_app/logicscripts/GlobalData.dart';
-
 import '../logicscripts/FetchData.dart';
 
 class LoginPage extends StatefulWidget {
@@ -50,7 +46,6 @@ class _LoginPageState extends State<LoginPage> {
       final result = await FetchData.connectionStatus();
 
       if (result["error"] == "incomplete request") {
-        // setState(() {_isLoading = false;});
         // popUpCenter("Error Making Request");
         return;
       }
@@ -138,9 +133,6 @@ class _LoginPageState extends State<LoginPage> {
       }
 
 
-      // popUp(jsonEncode(result2));
-      // return;
-
       if (result2["status"] == false) {
         // popUp(jsonEncode(result2));
         // return;
@@ -193,8 +185,6 @@ class _LoginPageState extends State<LoginPage> {
                   size: isTablet ? 100: 50,
                 ),
 
-                // IconButton(onPressed: () {}, icon: Image.asset('lib/images/IOTWiFiIcon.jpeg'),
-                // style: Ico,),
 
                 // spacing below icon
                 SizedBox(height: isTablet ? 50: 25,),

@@ -106,10 +106,14 @@ class _RainingState extends State<Raining> {
     double Raining = 0.0;
     String timestamp = "";
     if (jsonData.containsKey('Raining')) {
+      print(jsonData.toString());
       // Check if 'Raining' is an integer
-      if (jsonData['Raining'] is bool) {
+      if (jsonData['Raining'] is int) {
+        // Negating due to sensor conductivity
+        jsonData['Raining'] = 1 - jsonData['Raining'];
         // Convert 'Raining' to double
         Raining = jsonData['Raining'].toDouble();
+        print(Raining);
         // print('Raining (converted to double): $Raining');
       } else {
         return null;
@@ -159,9 +163,10 @@ class _RainingState extends State<Raining> {
 
     if(socketConnected == true && listening == false){
       socket.on('data-post', (data) {
-        print(data.toString());
+        // print(data.toString());
 
         Pair? dat = processor(data);
+        print(dat.toString());
         if(dat!=null){
 
           setState(() {
@@ -208,17 +213,6 @@ class _RainingState extends State<Raining> {
                     children: [
                       Text("Raining", style: TextStyle(fontSize: isTablet ?  60 : 30, fontWeight: FontWeight.bold),),
 
-                      // SizedBox(width: 10), // Add space between text and icon
-                      // // Circular icon indicating connection status
-                      // Container(
-                      //   width: 20,
-                      //   height: 20,
-                      //   decoration: BoxDecoration(
-                      //     shape: BoxShape.circle,
-                      //     color: socketConnected ? Colors.green : Colors.red,
-                      //   ),
-                      // ),
-
                     ],
                   ),
                 ),
@@ -230,7 +224,7 @@ class _RainingState extends State<Raining> {
 
                 ActiveButton(onTap: () {
 
-                  print(socketConnected);
+                  // print(socketConnected);
 
                   if(buttonState == false) {
 
@@ -240,12 +234,7 @@ class _RainingState extends State<Raining> {
                   } else {
 
                     noLiveMode();
-                    // if(socketConnected == true && listening == true){
-                    //
-                    //   socket.off('data-post');
-                    //
-                    //   listening = false;
-                    // }
+
                     buttonState = !buttonState;
 
                   }
@@ -260,9 +249,6 @@ class _RainingState extends State<Raining> {
                   data: randomData,
                   unit: 'm',
                 ),
-
-
-
 
 
 
