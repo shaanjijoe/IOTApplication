@@ -124,6 +124,17 @@ class FetchData {
     }
   }
 
+  static Future<bool> clearData() async {
+    try {
+      final box = await Hive.openBox<DataModel>('DesignLab');
+      await box.clear();
+
+      return true;
+    } catch (e) {
+      print('Error erasing data: $e');
+      return false;
+    }
+  }
 
 // Method to fetch post data
   // static Future<Map<String, dynamic>> fetchPostData() async {

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-// import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iot_app/logicscripts/Database/DataModel.dart';
 import 'package:iot_app/pages/Concentration.dart';
 import 'package:iot_app/pages/altitude.dart';
-// import 'package:iot_app/pages/authPage.dart';
 import 'package:iot_app/pages/homePage.dart';
 import 'package:iot_app/pages/humidity.dart';
-// import 'package:iot_app/pages/loginPage.dart';
 import 'package:iot_app/pages/loginorregister.dart';
 import 'package:iot_app/pages/pressure.dart';
+import 'package:iot_app/pages/raining.dart';
 import 'package:iot_app/pages/settings.dart';
 import 'package:iot_app/pages/temperature.dart';
 
@@ -17,8 +15,6 @@ void main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(DataModelAdapter());
-
-  // await Hive.openBox('DesignLab');
 
   runApp(const MyApp());
 }
@@ -43,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/settings' : (context) => const Settings(),
         '/altitude' : (context) => const Altitude(),
         '/humidity' : (context) => const Humidity(),
+        '/raining' : (context) => const Raining(),
       },
     );
   }
