@@ -123,41 +123,6 @@ class _HomePageState extends State<HomePage> {
       }
     }
 
-    // bool processor(dynamic jsonData){
-    //   // Check if 'Altitude' field exists
-    //   double Altitude = 0.0;
-    //   String timestamp = "";
-    //   if (jsonData.containsKey('Altitude')) {
-    //     // Check if 'Altitude' is an integer
-    //     if (jsonData['Altitude'] is int) {
-    //       // Convert 'Altitude' to double
-    //       Altitude = jsonData['Altitude'].toDouble();
-    //       // print('Altitude (converted to double): $Altitude');
-    //     } else if (jsonData['Altitude'] is double) {
-    //       Altitude = jsonData['Altitude'];
-    //       // If 'Altitude' is already a double, no need to convert
-    //       // print('Altitude: ${jsonData['Altitude']}');
-    //     } else {
-    //       return null;
-    //     }
-    //   } else {
-    //     // print('Altitude not found');
-    //     return null;
-    //   }
-    //
-    //   // Check if 'timestamp' field exists
-    //   if (jsonData.containsKey('timestamp')) {
-    //     // Convert 'timestamp' to string
-    //     timestamp = jsonData['timestamp'].toString();
-    //     // print('Timestamp (converted to string): $timestamp');
-    //   } else {
-    //     return null;
-    //     // print('Timestamp not found');
-    //   }
-    //
-    //   return true;
-    //
-    // }
 
 
     void getData() async {
@@ -185,7 +150,7 @@ class _HomePageState extends State<HomePage> {
 
       // print(lst == null);
       for(var item2 in lst) {
-        print(item2.toString());
+        // print(item2.toString());
         // continue;
 
         if(!item2.containsKey('timestamp')){

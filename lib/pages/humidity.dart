@@ -111,8 +111,7 @@ class _HumidityState extends State<Humidity> {
         // print('Humidity (converted to double): $Humidity');
       } else if (jsonData['Humidity'] is double) {
         Humidity = jsonData['Humidity'];
-        // If 'Humidity' is already a double, no need to convert
-        // print('Humidity: ${jsonData['Humidity']}');
+
       } else {
         return null;
       }
@@ -125,7 +124,6 @@ class _HumidityState extends State<Humidity> {
     if (jsonData.containsKey('timestamp')) {
       // Convert 'timestamp' to string
       timestamp = jsonData['timestamp'].toString();
-      // print('Timestamp (converted to string): $timestamp');
     } else {
       return null;
       // print('Timestamp not found');
@@ -209,18 +207,6 @@ class _HumidityState extends State<Humidity> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text("Humidity", style: TextStyle(fontSize: isTablet ?  60 : 30, fontWeight: FontWeight.bold),),
-
-                      // SizedBox(width: 10), // Add space between text and icon
-                      // // Circular icon indicating connection status
-                      // Container(
-                      //   width: 20,
-                      //   height: 20,
-                      //   decoration: BoxDecoration(
-                      //     shape: BoxShape.circle,
-                      //     color: socketConnected ? Colors.green : Colors.red,
-                      //   ),
-                      // ),
-
                     ],
                   ),
                 ),
@@ -232,7 +218,7 @@ class _HumidityState extends State<Humidity> {
 
                 ActiveButton(onTap: () {
 
-                  print(socketConnected);
+                  // print(socketConnected);
 
                   if(buttonState == false) {
 
@@ -242,12 +228,6 @@ class _HumidityState extends State<Humidity> {
                   } else {
 
                     noLiveMode();
-                    // if(socketConnected == true && listening == true){
-                    //
-                    //   socket.off('data-post');
-                    //
-                    //   listening = false;
-                    // }
                     buttonState = !buttonState;
 
                   }
@@ -262,11 +242,6 @@ class _HumidityState extends State<Humidity> {
                   data: randomData,
                   unit: 'gm-3',
                 ),
-
-
-
-
-
 
               ],
             ),

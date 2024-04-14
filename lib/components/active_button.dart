@@ -4,13 +4,12 @@ class ActiveButton extends StatefulWidget {
   final Function()? onTap;
   final String message;
   final String activeMessage;
-  // final bool isActive;
+
   ActiveButton({
     Key? key,
     required this.onTap,
     required this.message,
     required this.activeMessage,
-    // required this.isActive,
   }) : super(key: key);
 
   @override

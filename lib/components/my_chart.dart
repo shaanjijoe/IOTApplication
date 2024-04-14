@@ -26,13 +26,11 @@ class _MyChartState extends State<MyChart> {
   void updateChart(Pair newData) {
     setState(() {
       // Add new data to the existing data list
-      // _data.addAll(newData);
       _data.add(newData);
 
-      if(_data.length >20) {
+      if(_data.length >30) {
         _data.removeAt(0);
       }
-
     });
   }
 
@@ -60,35 +58,17 @@ class _MyChartState extends State<MyChart> {
             legend: const Legend(isVisible: true),
             series: <SplineSeries<Pair,String>>[
               SplineSeries<Pair,String>(
-              //   dataSource: <SalesData>[
-              //   SalesData(100, 'Mon'),
-              //   SalesData(20, 'Tue'),
-              //   SalesData(40, 'Wed'),
-              //   SalesData(60, 'Thu'),
-              //   SalesData(180, 'Fri'),
-              //   SalesData(30, 'Sat'),
-              // ],
 
                 dataSource: widget.pairDataList,
-                // xValueMapper: (SalesData sales,_) => sales.date,
-                // yValueMapper: (SalesData sales,_) => sales.sales,
                 xValueMapper: (Pair pairData, _) => pairData.Xstring,
                 yValueMapper: (Pair pairData, _) => pairData.Yint,
                 name: 'Time-Series Data',
-
               )
             ],
-      
           ),
       ),
     );
   }
-}
-
-class SalesData {
-  SalesData(this.sales, this.date);
-  final String date;
-  final int sales;
 }
 
 class Pair {

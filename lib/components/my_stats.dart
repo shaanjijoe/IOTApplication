@@ -29,11 +29,6 @@ class _StatsWidgetState extends State<StatsWidget> {
   late double q1=0.0;
   late double q3=0.0;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _calculateStatistics();
-  // }
 
   @override
   void didUpdateWidget(covariant StatsWidget oldWidget) {

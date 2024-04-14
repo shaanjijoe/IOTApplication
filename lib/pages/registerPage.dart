@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iot_app/components/my_button.dart';
 import 'package:iot_app/components/my_text_field.dart';
@@ -148,16 +145,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 50.0),
-                  // child: Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     Text(
-                  //       'Forgot Password?',
-                  //       style: TextStyle(color: Colors.grey.shade600,
-                  //           fontSize: fontSize),
-                  //     ),
-                  //   ],
-                  // ),
                 ),
 
 
@@ -238,10 +225,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     )
                   ],
                 )
-
-
-
-
 
               ],
             ),

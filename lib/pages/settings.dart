@@ -216,13 +216,15 @@ class _SettingsState extends State<Settings> {
                 length: 2, // Number of tabs
                 child: Column(
                   children: [
-                    const TabBar(
+                     TabBar(
                       labelColor: Colors.black,
                       unselectedLabelColor: Colors.grey,
                       indicatorColor: Colors.blue,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       tabs: [
-                        Tab(text: 'Clear Data',),
-                        Tab(text: 'Live Data'),
+                        Tab(child: Text('Clear Data',style: TextStyle(fontSize: fontSize-3),),),
+                        Tab(child: Text('Live Data',style: TextStyle(fontSize: fontSize-3),),),
+                        // Tab(text: 'Live Data'),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -233,11 +235,11 @@ class _SettingsState extends State<Settings> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Center(child: Text('Latest Data Timestamp', style: TextStyle(fontSize: fontSize),)), // Display latest timestamp
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Center(child: Text(latestTimestamp, style: TextStyle(fontSize: fontSize),)), // Display latest timestamp
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Center(
                                 child: ElevatedButton(
                                   onPressed: () {
@@ -305,11 +307,11 @@ class _SettingsState extends State<Settings> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text('Timestamp: ${data.timestamp}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                            SizedBox(height: 5),
+                                            const SizedBox(height: 5),
                                             Text('Concentration: ${data.concentration}  Temperature: ${data.temperature}', style: TextStyle(fontSize: 14)),
-                                            SizedBox(height: 5),
+                                            const SizedBox(height: 5),
                                             Text('Pressure: ${data.pressure}  Altitude: ${data.altitude}', style: TextStyle(fontSize: 14)),
-                                            SizedBox(height: 5),
+                                            const SizedBox(height: 5),
                                             Text('Humidity: ${data.humidity}  Rain: ${data.rain}', style: TextStyle(fontSize: 14)),
                                             // Add more Text widgets for other properties of your data model
                                           ],

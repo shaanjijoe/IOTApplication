@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> postRequest(Map<String, dynamic> requestBody, String apiUrl) async {
-  // const String apiUrl = 'https://fast-api-sample-9b2d.onrender.com'; // Replace with your API endpoint
 
   try {
     final response = await http.post(
@@ -17,13 +16,9 @@ Future<Map<String, dynamic>> postRequest(Map<String, dynamic> requestBody, Strin
       // Request successful, parse response JSON
       return jsonDecode(response.body);
     } else {
-      // Request failed, throw an error
-      // throw Exception('Failed with status code: ${response.statusCode}');
       return {"status":"error"};
     }
   } catch (error) {
-    // Handle exceptions
-    // throw Exception('Error: $error');
     return {"status":"error"};
   }
 }
