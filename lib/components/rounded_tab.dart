@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class RoundedTab extends StatelessWidget {
@@ -30,9 +31,10 @@ class RoundedTab extends StatelessWidget {
         ],
       ),
       child: Center(
-        child: Text(
+        child: AutoSizeText(
           text,
-          style: TextStyle(color: Colors.black, fontSize: fontSize), // Black text color
+          style: TextStyle(color: Colors.black, fontSize: fontSize),
+          maxLines: 1,// Black text color
         ),
       ),
     );

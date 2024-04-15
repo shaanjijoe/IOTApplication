@@ -240,7 +240,7 @@ class _HumidityState extends State<Humidity> {
                 StatsWidget(
                   heading: 'Statistics',
                   data: randomData,
-                  unit: 'gm-3',
+                  unit: '%',
                 ),
 
               ],
