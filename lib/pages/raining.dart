@@ -110,7 +110,7 @@ class _RainingState extends State<Raining> {
       // Check if 'Raining' is an integer
       if (jsonData['Raining'] is int) {
         // Negating due to sensor conductivity
-        jsonData['Raining'] = 1 - jsonData['Raining'];
+        // jsonData['Raining'] = 1 - jsonData['Raining'];
         // Convert 'Raining' to double
         Raining = jsonData['Raining'].toDouble();
         print(Raining);

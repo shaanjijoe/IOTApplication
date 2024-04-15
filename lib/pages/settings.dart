@@ -204,7 +204,7 @@ class _SettingsState extends State<Settings> {
                 text: 'Key: $key',
                 width: screenWidth * 0.8,
                 height: isTablet ? 70.0 : 50.0,
-                fontSize: isTablet ? 30.0 : 13.0,
+                fontSize: isTablet ? 27.0 : 20.0,
               ),
             ),
           ),

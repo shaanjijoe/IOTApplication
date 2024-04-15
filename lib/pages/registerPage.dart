@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iot_app/components/my_button.dart';
 import 'package:iot_app/components/my_text_field.dart';
@@ -20,6 +21,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   // controllers
   final emailController = TextEditingController();
+  bool _isLoading = false;
 
 
 
@@ -54,6 +56,9 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     void signUp() async{
+      setState(() {
+        _isLoading = true;
+      });
       final result = await FetchData.connectionStatus();
 
       String email = emailController.text;
@@ -61,6 +66,9 @@ class _RegisterPageState extends State<RegisterPage> {
       // Check the result and call the popUp function accordingly
       // popUp(jsonEncode(result));
       if (result["error"] == "incomplete request") {
+        setState(() {
+          _isLoading = false;
+        });
         popUpCenter("Error Making Request");
         return;
       }
@@ -68,12 +76,18 @@ class _RegisterPageState extends State<RegisterPage> {
       final result2 = await FetchData.register(email);
 
       if (result2["error"] == "duplicate") {
+        setState(() {
+          _isLoading = false;
+        });
         popUpCenter("Email already exists");
         return;
       }
 
 
       if (result2["error"] == "failed") {
+        setState(() {
+          _isLoading = false;
+        });
         popUpCenter("Account creation failed");
         return;
       }
@@ -86,6 +100,9 @@ class _RegisterPageState extends State<RegisterPage> {
       bool save2 = await FetchData.writeData("email", email);
 
       if(save && save2){
+        setState(() {
+          _isLoading = false;
+        });
         // popUp('Saved successfully');
         popUpCenter(token);
         GlobalData().setEmail(email);
@@ -108,26 +125,87 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 SizedBox(height: isTablet ? 50: 20,), //spacing on top
 
-                //logo
-                Icon(
-                  Icons.lock,
-                  size: isTablet ? 100: 50,
-                ),
-
-                // IconButton(onPressed: () {}, icon: Image.asset('lib/images/IOTWiFiIcon.jpeg'),
-                // style: Ico,),
-
-                // spacing below icon
-                SizedBox(height: isTablet ? 50: 25,),
-
-                Text(
-                  'Let\'s register',
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: isTablet ? 50: 25,
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: isTablet ? 40 : 20),
+                  padding: EdgeInsets.all(20.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 2.0),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                  textAlign: TextAlign.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: AutoSizeText(
+                          'Design Lab IOT App',
+                          style: TextStyle(fontSize: isTablet ? 50.0 : 30.0, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: 20.0),
+                      AutoSizeText(
+                        'Professor Incharge:',
+                        style: TextStyle(fontSize: isTablet ? 35.0 :20.0),
+                      ),
+                      Center(
+                        child: AutoSizeText(
+                          'Professor Preetam Kumar',
+                          style: TextStyle(fontSize: isTablet ? 30.0 :16.0),
+                        ),
+                      ),
+                      AutoSizeText(
+                        'Group members:',
+                        style: TextStyle(fontSize: isTablet ? 35.0 : 20.0),
+                      ),
+                      Center(
+                        child: AutoSizeText(
+                          'Shaan Jijoe',
+                          style: TextStyle(fontSize: isTablet ? 30.0 :16.0),
+                        ),
+                      ),
+                      Center(
+                        child: AutoSizeText(
+                          'Aditya Gupta',
+                          style: TextStyle(fontSize: isTablet ? 30.0 :16.0),
+                        ),
+                      ),
+                      // SizedBox(height: 20.0),
+                      // AutoSizeText(
+                      //   'Professor Incharge:',
+                      //   style: TextStyle(fontSize: isTablet ? 35.0 :20.0),
+                      // ),
+                      // Center(
+                      //   child: AutoSizeText(
+                      //     'Professor Preetam Kumar',
+                      //     style: TextStyle(fontSize: isTablet ? 30.0 :16.0),
+                      //   ),
+                      // ),
+                      // SizedBox(height: 20.0),
+                    ],
+                  ),
                 ),
+                // SizedBox(height: 20.0),
+
+
+                //logo
+                // Icon(
+                //   Icons.lock,
+                //   size: isTablet ? 100: 50,
+                // ),
+                //
+                // // IconButton(onPressed: () {}, icon: Image.asset('lib/images/IOTWiFiIcon.jpeg'),
+                // // style: Ico,),
+                //
+                // // spacing below icon
+                // SizedBox(height: isTablet ? 50: 25,),
+                //
+                // Text(
+                //   'Let\'s register',
+                //   style: TextStyle(
+                //     color: Colors.grey[700],
+                //     fontSize: isTablet ? 50: 25,
+                //   ),
+                //   textAlign: TextAlign.center,
+                // ),
 
 
                 SizedBox(height: isTablet ? 50: 30,),
@@ -152,6 +230,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(height: isTablet ? 50: 25,),
 
 
+                _isLoading ?
+                CircularProgressIndicator():
                 MyButton(
                   message: 'Sign Up',
                   onTap: signUp,),
@@ -224,7 +304,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),),
                     )
                   ],
-                )
+                ),
+
+                SizedBox(height: isTablet ? 20: 10,),
 
               ],
             ),

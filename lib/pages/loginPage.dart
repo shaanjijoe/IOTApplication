@@ -1,7 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iot_app/components/my_button.dart';
 import 'package:iot_app/components/my_text_field.dart';
-import 'package:iot_app/components/square_tile.dart';
+// import 'package:iot_app/components/square_tile.dart';
 import 'package:iot_app/logicscripts/GlobalData.dart';
 import '../logicscripts/FetchData.dart';
 
@@ -177,29 +178,88 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: isTablet ? 40 : 20),
+                  padding: EdgeInsets.all(20.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 2.0),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: AutoSizeText(
+                          'Design Lab IOT App',
+                          style: TextStyle(fontSize: isTablet ? 50.0 : 30.0, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: 20.0),
+                      AutoSizeText(
+                        'Professor Incharge:',
+                        style: TextStyle(fontSize: isTablet ? 35.0 :20.0),
+                      ),
+                      Center(
+                        child: AutoSizeText(
+                          'Professor Preetam Kumar',
+                          style: TextStyle(fontSize: isTablet ? 30.0 :16.0),
+                        ),
+                      ),
+                      AutoSizeText(
+                        'Group members:',
+                        style: TextStyle(fontSize: isTablet ? 35.0 : 20.0),
+                      ),
+                      Center(
+                        child: AutoSizeText(
+                          'Shaan Jijoe',
+                          style: TextStyle(fontSize: isTablet ? 30.0 :16.0),
+                        ),
+                      ),
+                      Center(
+                        child: AutoSizeText(
+                          'Aditya Gupta',
+                          style: TextStyle(fontSize: isTablet ? 30.0 :16.0),
+                        ),
+                      ),
+                      // SizedBox(height: 20.0),
+                      // AutoSizeText(
+                      //   'Professor Incharge:',
+                      //   style: TextStyle(fontSize: isTablet ? 35.0 :20.0),
+                      // ),
+                      // Center(
+                      //   child: AutoSizeText(
+                      //     'Professor Preetam Kumar',
+                      //     style: TextStyle(fontSize: isTablet ? 30.0 :16.0),
+                      //   ),
+                      // ),
+                      // SizedBox(height: 20.0),
+                    ],
+                  ),
+                ),
+
                 SizedBox(height: isTablet ? 50: 25,), //spacing on top
 
                 //logo
-                 Icon(
-                  Icons.lock,
-                  size: isTablet ? 100: 50,
-                ),
-
-
-                // spacing below icon
-                SizedBox(height: isTablet ? 50: 25,),
-
-                Text(
-                  'Hi there! Welcome back',
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: isTablet ? 50: 25,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
-
-                SizedBox(height: isTablet ? 50: 25,),
+                //  Icon(
+                //   Icons.lock,
+                //   size: isTablet ? 100: 50,
+                // ),
+                //
+                //
+                // // spacing below icon
+                // SizedBox(height: isTablet ? 50: 25,),
+                //
+                // Text(
+                //   'Hi there! Welcome back',
+                //   style: TextStyle(
+                //     color: Colors.grey[700],
+                //     fontSize: isTablet ? 50: 25,
+                //   ),
+                //   textAlign: TextAlign.center,
+                // ),
+                //
+                //
+                // SizedBox(height: isTablet ? 50: 25,),
 
                 //username
                 MyTextField(
@@ -285,19 +345,19 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: isTablet ? 30: 20,),
 
                 // google and other sign in options
-                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SquareTile(imagePath: 'lib/images/IOTWiFiIcon.jpeg',),
+                //  Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     const SquareTile(imagePath: 'lib/images/IOTWiFiIcon.jpeg',),
+                //
+                //     SizedBox(width: isTablet? 50 : 25,),
+                //
+                //     const SquareTile(imagePath: 'lib/images/IOTWiFiIcon.jpeg'),
+                //   ],
+                // ),
 
-                    SizedBox(width: isTablet? 50 : 25,),
 
-                    const SquareTile(imagePath: 'lib/images/IOTWiFiIcon.jpeg'),
-                  ],
-                ),
-
-
-                SizedBox(height: isTablet ? 30: 25,),
+                SizedBox(height: isTablet ? 30: 10,),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -312,7 +372,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),),
                     )
                   ],
-                )
+                ),
+
+                SizedBox(height: isTablet ? 30: 25,),
 
 
               ],

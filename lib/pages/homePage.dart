@@ -93,10 +93,12 @@ class _HomePageState extends State<HomePage> {
         // Convert each parameter
         bool check = false;
         newItem.forEach((key, value) {
-          if (value is num) {
+          if(key == 'Raining'){
+            if(value is int){
+              newItem[key] = value == 1;
+            }
+          } else if (value is num) {
             newItem[key] = value.toDouble();
-          } else if (key == 'Raining' && value is int) {
-            newItem[key] = value == 1;
           } else if(key == 'timestamp') {
             try {
               DateTime timestamp = DateTime.parse(value);
@@ -175,7 +177,7 @@ class _HomePageState extends State<HomePage> {
         humidity = item['Humidity'];
         pressure = item['Pressure'];
         temperature = item['Temperature'];
-        rain = item['Raining'] == 1;
+        rain = item['Raining'];
         // print(rain);
         // print(concentration);
 
