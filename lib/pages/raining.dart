@@ -247,7 +247,7 @@ class _RainingState extends State<Raining> {
                 StatsWidget(
                   heading: 'Statistics',
                   data: randomData,
-                  unit: 'm',
+                  unit: '',
                 ),
 
 

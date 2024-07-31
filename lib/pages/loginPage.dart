@@ -170,6 +170,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
     return Scaffold(
+      // backgroundColor: Colors.white,
       backgroundColor: Colors.grey.shade300,
       body:  SafeArea( // avoiding notch area
         child: Center( // centering all
@@ -264,7 +265,7 @@ class _LoginPageState extends State<LoginPage> {
                 //username
                 MyTextField(
                   controller: emailController,
-                  hintText: 'Email',
+                  hintText: 'Username',
                   obscureText: false,
                 ),
 
