@@ -115,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      // backgroundColor: Colors.grey.shade300,
       body:  SafeArea( // avoiding notch area
         child: Center( // centering all
           child: SingleChildScrollView(
